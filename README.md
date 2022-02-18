@@ -1,4 +1,8 @@
-### Command and Code for end-to-end deployment of ML alogrithm using Vertex Ai
+
+### The folder up in the directory is the end-point for our model
+
+
+## In this Section we will focus on Commands and Code for end-to-end deployment of ML alogrithm using Vertex Ai
 
 ### Vertex AI: 
 ##### Vertex AI Workbench is the single environment for data scientists to complete all of their ML work, from experimentation, to deployment, to managing and monitoring models. It is a Jupyter-based fully managed, scalable, enterprise-ready compute infrastructure with security controls and user management capabilities. Vertex AI brings together the Google Cloud services for building ML under one, unified UI and API. In Vertex AI, you can now easily train and compare models using AutoML or custom code training and all your models are stored in one central model repository. These models can now be deployed to the same endpoints on Vertex AI.
