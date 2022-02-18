@@ -299,6 +299,11 @@ docker push $IMAGE_URI
 ```
 pip3 install google-cloud-aiplatform --upgrade --use
 ```
+
+
+<img width="1274" alt="Screenshot 2022-02-18 at 19 38 07" src="https://user-images.githubusercontent.com/49519053/154742810-0aceaef4-f725-4e08-83db-527495ee0876.png">
+
+
 Now, We'll create a Python file ```deploy.py``` inside Cloud Shell Editor (create a new file named deploy.py) and use the SDK to create a model resource and deploy it to an endpoint.
 
 <img width="715" alt="Screenshot 2022-02-18 at 18 23 45" src="https://user-images.githubusercontent.com/49519053/154732204-c5132d79-25f9-4636-b66d-822e6c8e7b72.png">
@@ -329,10 +334,15 @@ cd ..
 # run the deploy.py script
 python3 deploy.py | tee deploy-output.txt
 ```
-<img width="715" alt="Screenshot 2022-02-18 at 18 24 32" src="https://user-images.githubusercontent.com/49519053/154732346-cac8895f-328e-410a-819c-f8078baa6d74.png">
-
 
 ##### If, we navigate to Model Section on the console in Vertex AI, there will be an end point created inside 'mpg-imported'. This process takes upto 10 minutes to finish. And end-point will be ready.
+
+<img width="1011" alt="Screenshot 2022-02-18 at 19 43 41" src="https://user-images.githubusercontent.com/49519053/154743674-b8c23ae6-9402-41f4-a214-e7ca17e6edf5.png">
+
+##### On clicking 'mpg-imported' we can see the progresso of Deployment and as mentioned earlier it takes up 10 minutes to finish. And we will se something like this once it ends it will result into an end-point
+
+<img width="991" alt="Screenshot 2022-02-18 at 19 51 53" src="https://user-images.githubusercontent.com/49519053/154744549-df6196ff-39d6-4ec8-9f04-5cd4e0ec566b.png">
+
 
 ##### Now, we create a new python file named ```predict.py``` to predict the outcome for our testing values. This file is also created from Cloud Shell Editor and we paste the following code to save it.
 
@@ -364,6 +374,8 @@ python3 predict.py
 ```
 
 ##### Running this will result the output for the model we deployed for our custom independent variables.
+
+<img width="1172" alt="Screenshot 2022-02-18 at 20 08 58" src="https://user-images.githubusercontent.com/49519053/154746792-14148750-5b59-456e-bf34-f214ba109903.png">
 
 
 #### Sources:
