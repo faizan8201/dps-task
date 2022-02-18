@@ -23,11 +23,12 @@
 ##### During training process of the model we get our results in the form of assets and to store these saved models we need a bucket inside our project. So to generate a bucket to store assets, we run the following commands inside the shell and get our job done with the bucket creation.
 
 ``` 
-UCKET_NAME=gs://$GOOGLE_CLOUD_PROJECT-bucket
-gsutil mb -l us-central1 $BUCKET_NAME
+BUCKET_MPG = gs://$GOOGLE_CLOUD_PROJECT-bucket
+
+gsutil mb -l us-central1 $BUCKET_MPG
 ```
 
-##### To ensure we use Python3 in our lab, we create an alias for python3 as python with the following command.
+##### To ensure we use Python3 in our lab
 ```
 alias python=python3
 ```
@@ -298,19 +299,11 @@ python3 deploy.py | tee deploy-output.txt
 from google.cloud import aiplatform
 
 endpoint = aiplatform.Endpoint(
-    endpoint_name="ENDPOINT_STRING"
+    endpoint_name="ENDPOINT_MPG"
 )
 
 # A test example we'll send to our model for prediction
-test_mpg = [1.4838871833555929,
- 1.8659883497083019,
- 2.234620276849616,
- 1.0187816540094903,
- -2.530890710602246,
- -1.6046416850441676,
- -0.4651483719733302,
- -0.4952254087173721,
- 0.7746763768735953]
+test_mpg = [1, 2, 3, 2, -2, -1, -2, -1, 0]
 
 response = endpoint.predict([test_mpg])
 
@@ -321,7 +314,7 @@ print('Predicted MPG: ', response.predictions[0][0])
 ##### To provide our own endpoint id we navigate to terminal/shell and run the following command
 ```
 ENDPOINT=$(cat deploy-output.txt | sed -nre 's:.*Resource name\: (.*):\1:p' | tail -1)
-sed -i "s|ENDPOINT_STRING|$ENDPOINT|g" predict.py
+sed -i "s|ENDPOINT_MPG|$ENDPOINT|g" predict.py
 ```
 ##### Finally, we have completed  all the steps and it's time to run the ```predict.py``` to observe the final outcome of the model.
 
