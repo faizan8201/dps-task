@@ -82,7 +82,7 @@ ENTRYPOINT ["python", "-m", "trainer.train"]
 
 ```
 
-BUCKET = "-mpg-prediction-bucket"
+BUCKET = "BUCKET_MPG"
 
 import numpy as np
 import pandas as pd
