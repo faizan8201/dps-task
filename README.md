@@ -63,8 +63,8 @@ ENTRYPOINT ["python", "-m", "trainer.train"]
 ##### Now, we add the code to our ```train.py``` file, this code includes all the functions, operations and methods to load, clean, scale the data along with model training and saving the model upon optimisation of the weights. We navigate to the mpg/trainer/train.py and write down the following code and save it.
 
 ```
-# This will be replaced with your bucket name after running the `sed` command in the tutorial
-BUCKET = "BUCKET_NAME"
+
+BUCKET = "-mpg-prediction-bucket"
 
 import numpy as np
 import pandas as pd
@@ -74,7 +74,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-print(tf.__version__)
+
 
 """## The Auto MPG dataset
 
@@ -100,13 +100,16 @@ dataset.isna().sum()
 
 """To keep this initial tutorial simple drop those rows."""
 
-dataset = dataset.dropna()
+dataset['horsepower'].fillna((dataset['horsepower'].mean()), inplace=True)
+
 
 """The `"origin"` column is really categorical, not numeric. So convert that to a one-hot:"""
 
 dataset['origin'] = dataset['origin'].map({1: 'USA', 2: 'Europe', 3: 'Japan'})
 
-dataset = pd.get_dummies(dataset, prefix='', prefix_sep='')
+
+dataset = pd.get_dummies(dataset,columns=['origin', 'cylinders', 'model year'] , prefix='', prefix_sep='').drop('car name', axis=1)
+
 dataset.tail()
 
 """### Split the data into train and test
@@ -149,7 +152,7 @@ Note: Although we intentionally generate these statistics from only the training
 """
 
 def norm(x):
-  return (x - train_stats['mean']) / train_stats['std']
+    return (x - train_stats['mean']) / train_stats['std']
 normed_train_data = norm(train_dataset)
 normed_test_data = norm(test_dataset)
 
@@ -165,18 +168,18 @@ Let's build our model. Here, we'll use a `Sequential` model with two densely con
 """
 
 def build_model():
-  model = keras.Sequential([
+    model = keras.Sequential([
     layers.Dense(64, activation='relu', input_shape=[len(train_dataset.keys())]),
     layers.Dense(64, activation='relu'),
     layers.Dense(1)
   ])
 
-  optimizer = tf.keras.optimizers.RMSprop(0.001)
+    optimizer = tf.keras.optimizers.RMSprop(0.001)
 
-  model.compile(loss='mse',
+    model.compile(loss='mse',
                 optimizer=optimizer,
                 metrics=['mae', 'mse'])
-  return model
+    return model
 
 model = build_model()
 
@@ -216,7 +219,6 @@ early_history = model.fit(normed_train_data, train_labels,
 
 # Export model and save to GCS
 model.save(BUCKET + '/mpg/model')
-
 ```
 
 ##### Now, We move back to the shell/terminal and define a variable with the name of our image URL and the build the container inside the root of mpg directory
