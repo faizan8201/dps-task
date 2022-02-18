@@ -12,6 +12,18 @@
  ``` 
  gcloud auth list
  ```
+ ##### This return a confirmation in the following way
+ <img width="750" alt="Screenshot 2022-02-18 at 18 58 48" src="https://user-images.githubusercontent.com/49519053/154736985-68e9784a-7979-4047-acc5-72648fe347fa.png">
+
+
+##### TO confirm the situation following commands are to be run and the output will be as below.
+
+```
+gcloud config list project
+```
+<img width="761" alt="Screenshot 2022-02-18 at 18 59 59" src="https://user-images.githubusercontent.com/49519053/154737132-2855f34d-49d6-4239-a5f9-5aed0ee0a40b.png">
+
+ 
  ##### This command returns a confirmation about the activation, and we move towards enabling APIs that we require for this project.
  
  ```
@@ -19,6 +31,8 @@
                        containerregistry.googleapis.com  \
                        aiplatform.googleapis.com
  ```
+ <img width="937" alt="Screenshot 2022-02-18 at 19 02 28" src="https://user-images.githubusercontent.com/49519053/154737522-d4aa1dbf-b594-489a-98eb-71eec38920f1.png">
+
 
 ##### During training process of the model we get our results in the form of assets and to store these saved models we need a bucket inside our project. So to generate a bucket to store assets, we run the following commands inside the shell and get our job done with the bucket creation.
 
@@ -46,6 +60,9 @@ touch Dockerfile        # add a docker file inside mpg
 mkdir trainer           # create a new directory inside mpg
 touch trainer/train.py 
 ```
+
+<img width="715" alt="Screenshot 2022-02-18 at 18 20 08" src="https://user-images.githubusercontent.com/49519053/154731358-0c65bc68-c21d-467b-96ae-9f4045eae568.png">
+
 
 ##### In the next step, we add all the necessary commands required by the docker file to run the image. In our case, we will use Deep Learning Container TensorFlow Enterprise 2.3 Docker image, that contains several ML frameworks that we need for the project. After downloading the image, the docker file defines the entry point of the training code. To execute the functionality, we navigate to Docker file and write down the following code and save it.
 ```
@@ -235,16 +252,23 @@ IMAGE_URI="gcr.io/$GOOGLE_CLOUD_PROJECT/mpg:v1"
 docker build ./ -t $IMAGE_URI
 
 ```
+
+<img width="822" alt="Screenshot 2022-02-18 at 19 20 05" src="https://user-images.githubusercontent.com/49519053/154740266-56bcfb00-bfde-4f53-a354-d5c09e0f77b2.png">
+
 ##### Once the container is build, we push it to our Google Container Registry
 
 ```
 docker push $IMAGE_URI
 ```
+
 ##### To verify the push, we must locate an image named mpg inside the **Container Registry** section 
 
-### 3. Training on Vertex AI:
+<img width="715" alt="Screenshot 2022-02-18 at 18 21 24" src="https://user-images.githubusercontent.com/49519053/154731656-cbc81ed8-1495-4f04-8115-19d0f9ed101d.png">
 
-##### After successful compilation of image creation and pushing it to the Containers Registry, we navigate to the Training section in the Vertex section of Cloud console. There we select the following parameters for setting up the process pipeline.
+
+#### 3. Training on Vertex AI:
+
+##### After successful compilation of image creation and pushing it to the Containers Registry, we navigate to the Training section in the Vertex section of Cloud console. There we create new training by selecting the following parameters for setting up the process pipeline.
 
 >Under Dataset, select No managed dataset
 
@@ -252,12 +276,21 @@ docker push $IMAGE_URI
 
 > Enter mpg for Model name
 
+##### Click Continue
+
+> In the Container settings step, select Custom container:
+
+> In the first box (Container image), click Browse and find the container you just pushed to Container Registry. It should look something like this:
+
+<img width="562" alt="Screenshot 2022-02-18 at 19 25 47" src="https://user-images.githubusercontent.com/49519053/154741591-a61d0855-c6c7-4bd2-87e1-3611d6e9f370.png">
+
+
 ##### Next, In container settings we go for Custom conatianer and Browse the image we added to the Registry. Then we select the GPU/CPU as per our computation complexity, in our case it is a simple example, so we will go for the minimum powered machine. 
 
 ##### Up next, Under the Prediction container step, select No prediction container and move to the next Section. And we are ready to deploy our model
 
 
-### 4. Deploy model end-point:
+#### 4. Deploy model end-point:
 
 ##### In this step we'll create an endpoint for our trained model. We can use this to get predictions on our model via the Vertex AI API. Here we'll be using the Vertex AI SDK to create a model, deploy it to an endpoint, and get a prediction.
 
@@ -267,7 +300,11 @@ docker push $IMAGE_URI
 pip3 install google-cloud-aiplatform --upgrade --use
 ```
 Now, We'll create a Python file ```deploy.py``` inside Cloud Shell Editor (create a new file named deploy.py) and use the SDK to create a model resource and deploy it to an endpoint.
+
+<img width="715" alt="Screenshot 2022-02-18 at 18 23 45" src="https://user-images.githubusercontent.com/49519053/154732204-c5132d79-25f9-4636-b66d-822e6c8e7b72.png">
+
 And paste the code as written below inside the python file.
+
 ```
 from google.cloud import aiplatform
 
@@ -292,6 +329,8 @@ cd ..
 # run the deploy.py script
 python3 deploy.py | tee deploy-output.txt
 ```
+<img width="715" alt="Screenshot 2022-02-18 at 18 24 32" src="https://user-images.githubusercontent.com/49519053/154732346-cac8895f-328e-410a-819c-f8078baa6d74.png">
+
 
 ##### If, we navigate to Model Section on the console in Vertex AI, there will be an end point created inside 'mpg-imported'. This process takes upto 10 minutes to finish. And end-point will be ready.
 
