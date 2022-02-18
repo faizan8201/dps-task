@@ -246,8 +246,10 @@ docker push $IMAGE_URI
 
 ##### After successful compilation of image creation and pushing it to the Containers Registry, we navigate to the Training section in the Vertex section of Cloud console. There we select the following parameters for setting up the process pipeline.
 
-> Under Dataset, select No managed dataset
+>Under Dataset, select No managed dataset
+
 > Then select Custom training (advanced) as your training method and click Continue.
+
 > Enter mpg for Model name
 
 ##### Next, In container settings we go for Custom conatianer and Browse the image we added to the Registry. Then we select the GPU/CPU as per our computation complexity, in our case it is a simple example, so we will go for the minimum powered machine. 
